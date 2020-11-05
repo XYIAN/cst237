@@ -1,0 +1,67 @@
+ #Kyle Dilbeck lab4 cst237
+#10/15/20
+#M[R[rs]+Sign
+#
+
+
+.data  
+	minorMsg: .asciiz "You are a minor."
+	adultMsg: .asciiz "You are an adult."
+	greeting: .asciiz "Welcome to Kyle Dilbeck's Homework 8 :)\n"
+	welcomeMsg: .asciiz "Enter Your Age: "
+	newLine: .asciiz "\n"
+	ageLimit: .word 18
+.text
+
+main:  # int i = 0; $t0 will be our index i
+	li $t0, 0
+	li $t1, 18
+greet: 
+	li $v0, 4
+	la, $a0, greeting
+	syscall
+while:
+	lw $t5, ageLimit
+	li $t4, -1
+	beq $t4, $t2, endWhile
+	#age prompt
+	li $v0, 4
+	la $a0, welcomeMsg
+	syscall 
+	li $v0, 5 
+	syscall
+	move $t2, $v0 #age == $t2
+	
+	slt $t3, $t2, $t1
+	beq $t3, $0, Else
+	#display msg
+	li $v0, 4
+	la $a0, minorMsg
+	syscall 
+	li $v0, 4
+	la $a0, newLine
+	syscall 
+	j endIf 
+Else:
+	#display msg
+	li $v0, 4
+	la $a0, adultMsg
+	syscall 
+	li $v0, 4
+	la $a0, newLine
+	syscall 
+endIf: 
+	#print age(DEBUGGING)
+	#li $v0, 1
+	#move $a0, $t2
+	#syscall
+#i++
+	addi $t0, $t0, 1
+	j while
+endWhile:
+
+
+exit:# exit cleanly
+	li $v0, 10  #exit code for MARS
+	syscall
+
